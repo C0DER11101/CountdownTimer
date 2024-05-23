@@ -27,7 +27,7 @@
 </head>
 <body>
     <h1>Month Countdown Timer</h1>
-    <div>
+    <div id="inputDiv">
         <label for="monthsInput">Enter time in months:</label>
         <input type="number" id="monthsInput" min="1" />
         <button onclick="startCountdown()">Start</button>
@@ -35,31 +35,52 @@
     <div id="timer"></div>
 
     <script>
-        let targetDate;
         let interval;
+
+        function initialize() {
+            const storedTargetDate = localStorage.getItem('targetDate');
+            if (storedTargetDate) {
+                const targetDate = new Date(storedTargetDate);
+                const now = new Date();
+                if (now < targetDate) {
+                    startTimer(targetDate);
+                } else {
+                    localStorage.removeItem('targetDate');
+                    showInput();
+                }
+            } else {
+                showInput();
+            }
+        }
 
         function startCountdown() {
             const months = document.getElementById('monthsInput').value;
             if (months && months > 0) {
                 const currentDate = new Date();
-                targetDate = new Date(currentDate.setMonth(currentDate.getMonth() + parseInt(months)));
+                const targetDate = new Date(currentDate.setMonth(currentDate.getMonth() + parseInt(months)));
+                localStorage.setItem('targetDate', targetDate);
 
-                if (interval) clearInterval(interval);
-                interval = setInterval(updateTimer, 1000);
-
-                document.getElementById('timer').textContent = 'Countdown started!';
+                startTimer(targetDate);
             } else {
                 alert('Please enter a valid number of months.');
             }
         }
 
-        function updateTimer() {
+        function startTimer(targetDate) {
+            if (interval) clearInterval(interval);
+            interval = setInterval(() => updateTimer(targetDate), 1000);
+            document.getElementById('inputDiv').style.display = 'none';
+        }
+
+        function updateTimer(targetDate) {
             const now = new Date();
             const timeRemaining = targetDate - now;
 
             if (timeRemaining <= 0) {
                 clearInterval(interval);
+                localStorage.removeItem('targetDate');
                 document.getElementById('timer').textContent = "Time's up! Please enter a new time.";
+                showInput();
                 return;
             }
 
@@ -68,6 +89,12 @@
 
             document.getElementById('timer').textContent = `${daysRemaining} days remaining. ${monthsElapsed} months have elapsed.`;
         }
+
+        function showInput() {
+            document.getElementById('inputDiv').style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', initialize);
     </script>
 </body>
 </html>
