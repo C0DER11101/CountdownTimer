@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Countdown Timer</title>
+	</head>
+	<body>
+		<h1>Countdown Timer</h1>
+		<div id="timer">00:00:00</div>
+
+		<script>
+			let startTime = new Date();
+
+			function updateTimer() {
+							let currentTime = new Date();
+							let elapsedTime = new Date(currentTime - startTime);
+
+							let hours = String(elapsedTime.getUTCHours()).padStart(2, '0');
+							let minutes = String(elapsedTime.getUTCMinutes()).padStart(2, '0');
+							let seconds = String(elapsedTime.getUTCSeconds()).padStart(2, '0');
+
+							document.getElementById('timer').textContent = `${hours}:${minutes}:${seconds}`;
+						}
+
+			setInterval(updateTimer, 1000);
+		</script>
+	</body>
+</html>
