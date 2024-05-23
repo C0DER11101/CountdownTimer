@@ -1,6 +1,6 @@
 # ABOUT
 
-Just a simple countdown timer directly copied and pasted from chatgpt because I don't know html, css or js(what a shame).
+Just a simple countdown timer directly copied and pasted from chatgpt because I don't know html, css or js(what a shame :expressionless:).
 
 <p align = "center">
 &#9678; &#9678; &#9678;
