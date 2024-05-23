@@ -85,9 +85,9 @@
             }
 
             const daysRemaining = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-            const monthsElapsed = Math.floor((new Date() - (targetDate - (timeRemaining + daysRemaining * 1000 * 60 * 60 * 24))) / (1000 * 60 * 60 * 24 * 30));
+            const monthsRemaining = Math.floor(daysRemaining / 30);
 
-            document.getElementById('timer').textContent = `${daysRemaining} days remaining. ${monthsElapsed} months have elapsed.`;
+            document.getElementById('timer').textContent = `${daysRemaining} days remaining. ${monthsRemaining} months remaining.`;
         }
 
         function showInput() {
