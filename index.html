@@ -1,29 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Countdown Timer</title>
-	</head>
-	<body>
-		<h1>Countdown Timer</h1>
-		<div id="timer">00:00:00</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Month Countdown Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input {
+            padding: 10px;
+            font-size: 1rem;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+        #timer {
+            font-size: 2rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Month Countdown Timer</h1>
+    <div>
+        <label for="monthsInput">Enter time in months:</label>
+        <input type="number" id="monthsInput" min="1" />
+        <button onclick="startCountdown()">Start</button>
+    </div>
+    <div id="timer"></div>
 
-		<script>
-			let startTime = new Date();
+    <script>
+        let targetDate;
+        let interval;
 
-			function updateTimer() {
-							let currentTime = new Date();
-							let elapsedTime = new Date(currentTime - startTime);
+        function startCountdown() {
+            const months = document.getElementById('monthsInput').value;
+            if (months && months > 0) {
+                const currentDate = new Date();
+                targetDate = new Date(currentDate.setMonth(currentDate.getMonth() + parseInt(months)));
 
-							let hours = String(elapsedTime.getUTCHours()).padStart(2, '0');
-							let minutes = String(elapsedTime.getUTCMinutes()).padStart(2, '0');
-							let seconds = String(elapsedTime.getUTCSeconds()).padStart(2, '0');
+                if (interval) clearInterval(interval);
+                interval = setInterval(updateTimer, 1000);
 
-							document.getElementById('timer').textContent = `${hours}:${minutes}:${seconds}`;
-						}
+                document.getElementById('timer').textContent = 'Countdown started!';
+            } else {
+                alert('Please enter a valid number of months.');
+            }
+        }
 
-			setInterval(updateTimer, 1000);
-		</script>
-	</body>
+        function updateTimer() {
+            const now = new Date();
+            const timeRemaining = targetDate - now;
+
+            if (timeRemaining <= 0) {
+                clearInterval(interval);
+                document.getElementById('timer').textContent = "Time's up! Please enter a new time.";
+                return;
+            }
+
+            const daysRemaining = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const monthsElapsed = Math.floor((new Date() - (targetDate - (timeRemaining + daysRemaining * 1000 * 60 * 60 * 24))) / (1000 * 60 * 60 * 24 * 30));
+
+            document.getElementById('timer').textContent = `${daysRemaining} days remaining. ${monthsElapsed} months have elapsed.`;
+        }
+    </script>
+</body>
 </html>
